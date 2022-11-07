@@ -101,7 +101,7 @@ const handleLog = (log) => {
 }
 
 // schedules the function to run @ 10am EST everyday
-const job = new CronJob("23 * * * *", () => {
+const job = new CronJob("23 * * * *)", () => {
   handleGames()
 },
   null,
