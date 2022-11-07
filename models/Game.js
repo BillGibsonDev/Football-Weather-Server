@@ -12,6 +12,7 @@ const WeatherSchema = new mongoose.Schema({
 })
 
 const GameSchema = new mongoose.Schema({
+    Updated: String,
     HomeTeam: String,
     AwayTeam: String,
     ScoreID: String,
@@ -26,7 +27,7 @@ const GameSchema = new mongoose.Schema({
     StadiumState: String,
     Status: String,
     Week: Number,
-    Weather: [{ type: WeatherSchema, ref: 'Weather'}]
+    Weather: { type: WeatherSchema, ref: 'Weather'}
 })
 
 export const GameModel = mongoose.model("Game", GameSchema);

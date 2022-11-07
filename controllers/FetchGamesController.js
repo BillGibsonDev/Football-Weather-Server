@@ -1,8 +1,9 @@
-const CronJob = require('cron').CronJob;
-const fs = require("fs");
-require('dotenv').config()
+import fs from 'fs';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import { GameModel } from '../models/Game.js';
 
-import { GameModel } from '../models/Game';
+dotenv.config();
 
 // inital API call to get the game schedule
 export const handleGames = async () => {
@@ -43,7 +44,9 @@ const handleWeather = async (lat, lon, data) => {
         } else if (data.Status === "F/OT") {
           handleLog(data.Status);
         } else {
+          console.log(hour)
           postData(data, hour);
+          handleLog(hour)
         }
       })
   } catch (err) {
@@ -54,35 +57,44 @@ const handleWeather = async (lat, lon, data) => {
 
 // takes in the sports data and weather data and creates the tweet
 const postData = async (data, weather) => {
-  const newGameModel = new GameModel({ 
-    HomeTeam: data.HomeTeam,
-    AwayTeam: data.AwayTeam,
-    ScoreID: data.ScoreID,
-    DateTime: data.DateTime,
-    Channel: data.Channel, 
-    StadiumLat: data.StadiumDetails.GeoLat,
-    StadiumLon: data.StadiumDetails.GeoLong, 
-    StadiumType: data.StadiumDetails.Type,
-    StadiumName: data.StadiumDetails.Name,
-    StadiumCity: data.StadiumDetails.City,
-    StadiumCountry: data.StadiumDetails.Country,
-    StadiumState: data.StadiumDetails.State,
-    Status: data.Status,
-    Week: data.Week,
-    Weather: {
-      Icon: weather.icon,
-      Temp: weather.temp_f,
-      Wind: weather.wind_mph,
-      Gusts: weather.gust_mph,
-      Condition: weather.text,
-      Rain: weather.chance_of_rain, 
-      Snow: weather.chance_of_snow,
-    }
-  })
   try {
-    await newGameModel.save();
+    await GameModel.findOneAndUpdate(
+      {ScoreID: data.ScoreID},
+      {
+        $set: {
+          Updated: new Date,
+          HomeTeam: data.HomeTeam,
+          AwayTeam: data.AwayTeam,
+          ScoreID: data.ScoreID,
+          DateTime: data.DateTime,
+          Channel: data.Channel, 
+          StadiumLat: data.StadiumDetails.GeoLat,
+          StadiumLon: data.StadiumDetails.GeoLong, 
+          StadiumType: data.StadiumDetails.Type,
+          StadiumName: data.StadiumDetails.Name,
+          StadiumCity: data.StadiumDetails.City,
+          StadiumCountry: data.StadiumDetails.Country,
+          StadiumState: data.StadiumDetails.State,
+          Status: data.Status,
+          Week: data.Week,
+          Weather: {
+            Icon: weather[0].condition.icon,
+            Temp: weather[0].temp_f,
+            Wind: weather[0].wind_mph,
+            Gusts: weather[0].gust_mph,
+            Condition: weather[0].condition.text,
+            Rain: weather[0].chance_of_rain, 
+            Snow: weather[0].chance_of_snow,
+          }
+        }
+      },
+      {
+        upsert: true, 
+        new: true, 
+        setDefaultsOnInsert: true,
+      });
     let message = `\n data sent @ ${new Date}`;
-    fs.appendFile("logs1.txt", message, function (err) {
+    fs.appendFile("./weatherLog1.txt", message, function (err) {
       if (err) console.log(err);
       console.log(message);
     });
@@ -94,19 +106,8 @@ const postData = async (data, weather) => {
 // creates a log in the log file when the function is called
 const handleLog = (log) => {
   let message = `\n ${log} @ ${new Date}`;
-  fs.appendFile("logs1.txt", message, function (err) {
+  fs.appendFile("./weatherLog1.txt", message, function (err) {
     if (err) console.log(err);
     console.log(`${err} @ ${message}`);
   });
 }
-
-// schedules the function to run @ 10am EST everyday
-const job = new CronJob("23 * * * *)", () => {
-  handleGames()
-},
-  null,
-  true,
-  'America/New_York'
-);
-
-job.start();

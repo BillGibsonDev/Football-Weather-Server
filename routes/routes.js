@@ -1,15 +1,13 @@
 import express from 'express';
-import dotenv from 'dotenv';
 const router = express.Router();
-dotenv.config();
 
-import { handleGames } from '../controllers/GameController';
+//import { handleGames } from '../controllers/GameController.js';
+import { getGames } from '../controllers/GetGamesController.js';
 
 // // read
-// router.get('/games');
+router.get('/games', getGames);
 
 // // update
-router.post(`/update-games/${process.env.NODE_ENV_UPDATE_SECRET}`, handleGames());
-
+// router.post(`/fetch`, job.start());
 
 export default router;
