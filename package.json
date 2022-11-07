@@ -6,7 +6,8 @@
         "express": "^4.17.1",
         "mongoose": "^6.0.12",
         "node-cron": "^3.0.2",
-        "nodemon": "^2.0.14"
+        "nodemon": "^2.0.14",
+        "webpack": "^5.74.0"
     },
     "scripts": {
         "build": "webpack",
