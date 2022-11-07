@@ -17,9 +17,9 @@ const port = process.env.PORT || 5000;
 app.use('/', routes);
 
 mongoose.connect(   
-    process.env.NODE_ENV_MONGO_KEY, {
-        useNewUrlParser: true,
-    }
+  process.env.NODE_ENV_MONGO_KEY, {
+    useNewUrlParser: true,
+  }
 );
 
 app.listen(port, host, () => {

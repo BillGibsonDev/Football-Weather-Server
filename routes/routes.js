@@ -3,11 +3,13 @@ import dotenv from 'dotenv';
 const router = express.Router();
 dotenv.config();
 
-// read
+import { handleGames } from '../controllers/GameController';
 
-// update
+// // read
+// router.get('/games');
 
-// create
+// // update
+router.post(`/update-games/${process.env.NODE_ENV_UPDATE_SECRET}`, handleGames());
 
 
 export default router;
