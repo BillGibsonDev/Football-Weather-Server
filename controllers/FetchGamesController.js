@@ -1,14 +1,14 @@
 import fs from 'fs';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { GameModel } from '../models/Game.js';
+import { WeatherModel } from '../models/Weather.js';
 
 dotenv.config();
 
 // inital API call to get the game schedule
 export const handleGames = async () => {
   try {
-    await fetch(`https://api.sportsdata.io/v3/nfl/scores/json/ScoresByWeek/2022/9?key=${process.env.NODE_ENV_SPORTS_KEY}`, {
+    await fetch(`https://api.sportsdata.io/v3/nfl/scores/json/ScoresByWeek/2022/10?key=${process.env.NODE_ENV_SPORTS_KEY}`, {
       method: 'get'
     })
       .then((res) => res.json())
@@ -31,24 +31,25 @@ const handleWeather = async (lat, lon, data) => {
     await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${process.env.NODE_ENV_WEATHER_KEY}&q=${lat},${lon}&days=10&aqi=no&alerts=yes`, {
       method: 'get'
     })
-      .then((res) => res.json())
-      .then((json) => {
-        let day = json.forecast.forecastday.filter(weather => weather.date === data.DateTime.slice(0, 10))
-        let hour = day[0].hour.filter(hour => hour.time.slice(11, 13) === data.DateTime.slice(11, 13))
-        if (hour === undefined) {
-          handleLog(hour);
-        } else if (data.Status === "InProgress") {
-          handleLog(data.Status);
-        } else if (data.Status === "Final") {
-          handleLog(data.Status);
-        } else if (data.Status === "F/OT") {
-          handleLog(data.Status);
-        } else {
-          console.log(hour)
-          postData(data, hour);
-          handleLog(hour)
-        }
-      })
+    .then((res) => res.json())
+    .then((json) => {
+      console.log(json)
+      let day = json.forecast.forecastday.filter(weather => weather.date === data.DateTime.slice(0, 10))
+      let hour = day[0].hour.filter(hour => hour.time.slice(11, 13) === data.DateTime.slice(11, 13))
+      if (data.Status === "InProgress") {
+        handleLog(data.Status);
+      } else if (data.Status === "Final") {
+        handleLog(data.Status);
+      } else if (data.Status === "F/OT") {
+        handleLog(data.Status);
+      } else if (hour === undefined){
+        postData(data);
+        handleLog("hour undefined")
+      } else {
+        postData(data, hour);
+        handleLog(hour)
+      }
+    })
   } catch (err) {
     console.log(err);
     handleLog(err);
@@ -58,34 +59,19 @@ const handleWeather = async (lat, lon, data) => {
 // takes in the sports data and weather data and creates the tweet
 const postData = async (data, weather) => {
   try {
-    await GameModel.findOneAndUpdate(
+    await WeatherModel.findOneAndUpdate(
       {ScoreID: data.ScoreID},
       {
         $set: {
-          Updated: new Date,
-          HomeTeam: data.HomeTeam,
-          AwayTeam: data.AwayTeam,
           ScoreID: data.ScoreID,
-          DateTime: data.DateTime,
-          Channel: data.Channel, 
-          StadiumLat: data.StadiumDetails.GeoLat,
-          StadiumLon: data.StadiumDetails.GeoLong, 
-          StadiumType: data.StadiumDetails.Type,
-          StadiumName: data.StadiumDetails.Name,
-          StadiumCity: data.StadiumDetails.City,
-          StadiumCountry: data.StadiumDetails.Country,
-          StadiumState: data.StadiumDetails.State,
-          Status: data.Status,
-          Week: data.Week,
-          Weather: {
-            Icon: weather[0].condition.icon,
-            Temp: weather[0].temp_f,
-            Wind: weather[0].wind_mph,
-            Gusts: weather[0].gust_mph,
-            Condition: weather[0].condition.text,
-            Rain: weather[0].chance_of_rain, 
-            Snow: weather[0].chance_of_snow,
-          }
+          Icon: weather[0].condition.icon,
+          Temp: weather[0].temp_f,
+          Wind: weather[0].wind_mph,
+          Gusts: weather[0].gust_mph,
+          Condition: weather[0].condition.text,
+          Rain: weather[0].chance_of_rain, 
+          Snow: weather[0].chance_of_snow,
+          Updated: new Date
         }
       },
       {
