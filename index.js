@@ -6,6 +6,7 @@ import cron from 'node-cron';
 
 // functions
 import { handleGames } from './controllers/FetchGamesController.js';
+
 import routes from './routes/routes.js';
 
 dotenv.config();
@@ -23,6 +24,7 @@ mongoose.connect(
   }
 );
 
+// calls the handleGame function every 30minutes
 const job = cron.schedule("*/30 * * * *", () => {
   handleGames();
   console.log('job started')

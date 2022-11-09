@@ -47,7 +47,6 @@ const handleWeather = async (lat, lon, data) => {
         handleLog("hour undefined")
       } else {
         postData(data, hour);
-        handleLog(hour)
       }
     })
   } catch (err) {
