@@ -17,7 +17,7 @@ export const handleGames = async () => {
         for (let i = 0; i < data.length; i++) {
           setTimeout(() => {
             handleWeather(data[i].StadiumDetails.GeoLat, data[i].StadiumDetails.GeoLong, data[i])
-          }, 1000 * 60 * i / 3)
+          }, 1000 * 60 * i / 4)
         }
       })
   } catch (err) {
@@ -33,7 +33,6 @@ const handleWeather = async (lat, lon, data) => {
     })
     .then((res) => res.json())
     .then((json) => {
-      console.log(json)
       let day = json.forecast.forecastday.filter(weather => weather.date === data.DateTime.slice(0, 10))
       let hour = day[0].hour.filter(hour => hour.time.slice(11, 13) === data.DateTime.slice(11, 13))
       if (data.Status === "InProgress") {

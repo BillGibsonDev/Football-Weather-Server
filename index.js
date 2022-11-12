@@ -25,7 +25,7 @@ mongoose.connect(
 );
 
 // calls the handleGame function every 30minutes
-const job = cron.schedule("*/30 * * * *", () => {
+const job = cron.schedule("30 */1 * * *", () => {
   handleGames();
   console.log('job started')
 },
