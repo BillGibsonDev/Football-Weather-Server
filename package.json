@@ -13,7 +13,7 @@
     "scripts": {
         "build": "npm run build",
         "watch": "webpack --watch",
-        "start": "nodemon index.js",
+        "start": "node index.js",
         "devstart": "nodemon index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
