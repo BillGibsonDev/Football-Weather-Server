@@ -11,7 +11,7 @@
         "webpack-cli": "^4.10.0"
     },
     "scripts": {
-        "build": "npm run build",
+        "build": "webpack",
         "watch": "webpack --watch",
         "start": "node index.js",
         "devstart": "nodemon index.js",
