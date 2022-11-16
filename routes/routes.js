@@ -1,13 +1,10 @@
 import express from 'express';
 const router = express.Router();
 
-//import { handleGames } from '../controllers/GameController.js';
+// functions
 import { getWeather } from '../controllers/GetGamesController.js';
 
-// // read
+//read
 router.get('/games', getWeather);
-
-// // update
-// router.post(`/fetch`, job.start());
 
 export default router;

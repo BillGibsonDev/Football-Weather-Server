@@ -2,14 +2,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import cron from 'node-cron';
 
-// functions
-import { handleGames } from './controllers/FetchGamesController.js';
-
+// routes
 import routes from './routes/routes.js';
 
 dotenv.config();
+
 const app = express();
 
 app.use(express.json());
@@ -24,19 +22,8 @@ mongoose.connect(
   }
 );
 
-// calls the handleGame function every 30minutes
-const job = cron.schedule("30 */1 * * *", () => {
-  handleGames();
-  console.log('job started')
-},
-  null,
-  true,
-  'America/New_York'
-);
-
 app.use('/', routes);
 
 app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
-  job.start();
 }); 
