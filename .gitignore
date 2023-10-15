@@ -2,3 +2,4 @@
 node_modules
 .txt
 weatherLog1.txt
+package-lock.json
