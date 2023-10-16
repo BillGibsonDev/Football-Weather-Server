@@ -10,19 +10,25 @@ export const getWeather = async (req, res) => {
   }
 }
 
-const removeOlderData = (dateString) => {
-  const dateToCheck = new Date(dateString);
-  const today = new Date();
+const removeOlderGames = async () => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const games = await GameModel.find({ 'GameData.Date': { $lt: today } });
 
-  const dateToCheckDate = dateToCheck.toISOString().split('T')[0];
-  const todayDate = today.toISOString().split('T')[0];
+    for (const game of games) {
+      await game.remove();
+      console.log(`${game.GameData.AwayTeam} vs ${game.GameData.HomeTeam} removed`);
+    }
 
-  return dateToCheckDate < todayDate;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export const addWeatherData = async (data, dayWeather, hourlyWeather) => { 
   try {
-    const game = await GameModel.findOne({ 'GameData.Gamekey': data.GameKey });
+    const game = await GameModel.findOne({ 'GameData.ScoreID': data.ScoreID });
     if(game){
       game.GameData = data;
       game.GameDayWeather = dayWeather;
@@ -39,13 +45,7 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
       console.log('Game Created');
     }
 
-    let games = await GameModel.find();
-    const filteredGames = games.filter(game => removeOlderData(game.GameData.Date));
-
-    for (const filteredGame of filteredGames) {
-      filteredGame.GameData = null;
-      await filteredGame.save();
-    }
+    await removeOlderGames();
 
   } catch (error) {
     console.log(error);

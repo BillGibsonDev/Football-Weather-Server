@@ -7,7 +7,6 @@ import { CronJob } from 'cron';
 // routes
 import routes from './routes/routes.js';
 import { handleGames } from './functions/main.js';
-import { cleanupData } from './controllers/GamesController.js';
 
 dotenv.config();
 
@@ -31,6 +30,8 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 }); 
 
+handleGames()
+
 const databaseJob = new CronJob("55 * * * *", () => {
   handleGames();
   console.log('database job started');
@@ -41,14 +42,3 @@ const databaseJob = new CronJob("55 * * * *", () => {
 );
 
 databaseJob.start();
-
-const cleanupJob = new CronJob("0 5 * * 2", () => {
-  cleanupData();
-  console.log('clean up started');
-},
-  null,
-  true,
-  'America/New_York'
-);
-
-cleanupJob.start();
