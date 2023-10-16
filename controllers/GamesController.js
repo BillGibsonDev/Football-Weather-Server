@@ -13,7 +13,7 @@ export const getWeather = async (req, res) => {
 
 export const addWeatherData = async (data, dayWeather, hourlyWeather) => { 
   try {
-    const game = await GameModel.findOne({ Gamekey: data.GameKey })
+    const game = await GameModel.findOne({ 'GameData.Gamekey': data.GameKey })
     if(game){
       game.GameData = data;
       game.GameDayWeather = dayWeather;
