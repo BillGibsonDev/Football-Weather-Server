@@ -9,7 +9,7 @@ import { handleForecastData } from "./handleForecastData.js";
 import { generateUserAgent } from "./generateUserAgent.js";
 import { addWeatherData } from "../controllers/GamesController.js";
 
-let attempts = 20;
+let attempts = 5;
 
 export const handleWeather = async (lat, lon, data) => {
   if(!lat || !lon ){
@@ -34,7 +34,7 @@ export const handleWeather = async (lat, lon, data) => {
       attempts--;
       setTimeout(() => {
         handleWeather(lat, lon, data);
-      }, 1000 * 60);
+      }, 1000 * 20);
     } else {
       handleErrorLog(`Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
     }

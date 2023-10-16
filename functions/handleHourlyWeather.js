@@ -2,7 +2,7 @@ import axios from 'axios';
 import { handleErrorLog } from './handleLog.js';
 import { generateUserAgent } from './generateUserAgent.js';
 
-let attempts = 20;
+let attempts = 5;
 
 export const handleHourlyWeather = async (forecastURL, data) => {
   try {
@@ -33,7 +33,7 @@ export const handleHourlyWeather = async (forecastURL, data) => {
         attempts--;
         setTimeout(() => {  
           handleHourlyWeather(forecastURL, data);
-        }, 1000 * 60);
+        }, 1000 * 20);
     } else {
       handleErrorLog(`Attempts Exceeded - Hourly Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
       return undefined;

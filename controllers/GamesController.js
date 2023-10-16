@@ -27,9 +27,11 @@ const removeOlderGames = async () => {
 }
 
 export const addWeatherData = async (data, dayWeather, hourlyWeather) => { 
+  const update = new Date();
   try {
     const game = await GameModel.findOne({ 'GameData.ScoreID': data.ScoreID });
     if(game){
+      game.Updated = update;
       game.GameData = data;
       game.GameDayWeather = dayWeather;
       game.HourlyWeather = hourlyWeather;
@@ -38,6 +40,7 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
       console.log('Game Updated');
     } else {
       await GameModel.create({
+        Updated: update,
         GameData: data,
         GameDayWeather: dayWeather,
         HourlyWeather: hourlyWeather
