@@ -30,8 +30,6 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 }); 
 
-handleGames()
-
 const databaseJob = new CronJob("55 * * * *", () => {
   handleGames();
   console.log('database job started');

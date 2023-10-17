@@ -33,8 +33,12 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
     if(game){
       game.Updated = update;
       game.GameData = data;
-      game.GameDayWeather = dayWeather;
-      game.HourlyWeather = hourlyWeather;
+      if(dayWeather){
+        game.GameDayWeather = dayWeather;
+      }
+      if(hourlyWeather){
+        game.HourlyWeather = hourlyWeather;
+      }
 
       await game.save();
       console.log('Game Updated');
