@@ -14,13 +14,13 @@ const removeOlderGames = async () => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const games = await GameModel.find({ 'GameData.Date': { $lt: today } });
-
+    const games = await GameModel.find();
     for (const game of games) {
-      await game.remove();
-      console.log(`${game.GameData.AwayTeam} vs ${game.GameData.HomeTeam} removed`);
+      if(game.GameData.Week !== 7){
+        await game.remove();
+        console.log('game removed')
+      }
     }
-
   } catch (error) {
     console.log(error);
   }
