@@ -10,6 +10,8 @@ export const getWeather = async (req, res) => {
   }
 }
 
+const statuses = [ 'Final', 'F/OT', 'Postponed' ];
+
 const removeOlderGames = async () => {
   try {
     const today = new Date();
@@ -18,7 +20,11 @@ const removeOlderGames = async () => {
     for (const game of games) {
       if(game.GameData.Week !== 7){
         await game.remove();
-        console.log('game removed')
+        console.log('game removed');
+      } 
+      if(statuses.includes(game.GameData.Status)){
+        await game.remove();
+        console.log('game removed');
       }
     }
   } catch (error) {
