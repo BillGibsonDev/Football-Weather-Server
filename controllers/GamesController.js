@@ -10,22 +10,18 @@ export const getWeather = async (req, res) => {
   }
 }
 
-const statuses = [ 'Final', 'F/OT', 'Postponed' ];
-
 const removeOlderGames = async () => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
     const games = await GameModel.find();
     for (const game of games) {
-      if(game.GameData.Week !== 7){
+      const gameDate = new Date(game.GameData.Date);
+      if(gameDate < today ){
         await game.remove();
         console.log('game removed');
       } 
-      if(statuses.includes(game.GameData.Status)){
-        await game.remove();
-        console.log('game removed');
-      }
     }
   } catch (error) {
     console.log(error);
@@ -67,13 +63,13 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
 
 export const cleanupData = async () => { 
   try {
-    const collection = mongoose.connection.collection('games')
+    const collection = mongoose.connection.collection('games');
     
-    await collection.drop()
+    await collection.drop();
 
-    console.log('collection cleaned')
+    console.log('collection cleaned');
 
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
