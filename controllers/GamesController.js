@@ -32,13 +32,18 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
   const update = new Date();
   try {
     const game = await GameModel.findOne({ 'GameData.ScoreID': data.ScoreID });
+    
+    const checkObject = (obj) => {
+      return !Object.keys(obj).length;
+    }
+
     if(game){
       game.Updated = update;
       game.GameData = data;
-      if(dayWeather){
+      if(checkObject(game.GameDayWeather)){
         game.GameDayWeather = dayWeather;
       }
-      if(hourlyWeather){
+      if(checkObject(game.HourlyWeather)){
         game.HourlyWeather = hourlyWeather;
       }
 
