@@ -7,6 +7,7 @@ import { CronJob } from 'cron';
 // routes
 import routes from './routes/routes.js';
 import { handleGames } from './functions/main.js';
+import { removeOlderGames } from './controllers/GamesController.js';
 
 dotenv.config();
 
@@ -40,3 +41,14 @@ const databaseJob = new CronJob("*/30 * * * *", () => {
 );
 
 databaseJob.start();
+
+const cleanupJob = new CronJob("0 1 * * *", () => {
+  removeOlderGames();
+  console.log('clean up job started');
+},
+  null,
+  true,
+  'America/New_York'
+);
+
+cleanupJob.start();

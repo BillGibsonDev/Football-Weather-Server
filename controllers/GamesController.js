@@ -10,7 +10,7 @@ export const getWeather = async (req, res) => {
   }
 }
 
-const removeOlderGames = async () => {
+export const removeOlderGames = async () => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -58,21 +58,6 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
       })
       console.log('Game Created');
     }
-
-    await removeOlderGames();
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export const cleanupData = async () => { 
-  try {
-    const collection = mongoose.connection.collection('games');
-    
-    await collection.drop();
-
-    console.log('collection cleaned');
 
   } catch (error) {
     console.log(error);
