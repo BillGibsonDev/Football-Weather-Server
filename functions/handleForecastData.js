@@ -1,7 +1,6 @@
 import axios from "axios";
 
 // functions
-import { handleErrorLog } from "./handleLog.js";
 import { handleHourlyWeather } from "./handleHourlyWeather.js";
 import { generateUserAgent } from "./generateUserAgent.js";
 
@@ -9,7 +8,7 @@ let attempts = 20;
 
 export const handleForecastData = async ( forecast, hourly, data ) => {
   if(!forecast || !hourly ) {
-    handleErrorLog(`No hourly forecast available ${data.AwayTeam} at ${data.HomeTeam}`);
+    console.log(`No hourly forecast available ${data.AwayTeam} at ${data.HomeTeam}`);
     return;
   }
   try {
@@ -50,7 +49,7 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
         handleForecastData(forecast, hourly, data);
       }, 1000 * 60);
     } else {
-      handleErrorLog(`Hourly Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.Log(`Hourly Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
     }
   }
 }

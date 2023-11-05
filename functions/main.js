@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import axios from "axios";
 
 // functions
-import { handleErrorLog } from "./handleLog.js";
 import { handleWeather } from "./handleWeather.js";
 
 dotenv.config();
@@ -59,7 +58,7 @@ export const handleGames = async () => {
         handleGames();
       }, 1000 * 60 * 5);
     } else {
-      handleErrorLog(`Attempts Exceeded - Game API Error ${error.response.status} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.log(`Attempts Exceeded - Game API Error ${error.response.status} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
     }
   }
 };

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { handleErrorLog } from './handleLog.js';
 import { generateUserAgent } from './generateUserAgent.js';
 
 let attempts = 5;
@@ -19,9 +18,9 @@ export const handleHourlyWeather = async (forecastURL, data) => {
       const weatherTime = weatherStartTimeEDT; 
       const splitWeatherTime = weatherTime.split(' ');
       const weatherHourAndAbbreviation = splitWeatherTime[1].split(':');
-      
       return `${weatherHourAndAbbreviation[0]}, ${splitWeatherTime[2]}` === `${gameHourAndAbbreviation[0]}, ${splitGameStartTime[2]}`;
     });
+
     let gameEndTime = timeIndex + 3;
     let hourlyWeather = day.slice(timeIndex, gameEndTime);
 
@@ -35,7 +34,7 @@ export const handleHourlyWeather = async (forecastURL, data) => {
           handleHourlyWeather(forecastURL, data);
         }, 1000 * 20);
     } else {
-      handleErrorLog(`Attempts Exceeded - Hourly Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.log(`Attempts Exceeded - Hourly Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
       return undefined;
     }
   }
