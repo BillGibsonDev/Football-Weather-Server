@@ -58,7 +58,7 @@ export const handleGames = async () => {
         handleGames();
       }, 1000 * 60 * 5);
     } else {
-      console.log(`Attempts Exceeded - Game API Error ${error.response.status} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.log(`Attempts Exceeded - Game API Error ${error.response.status}`);
     }
   }
 };
