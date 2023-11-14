@@ -34,6 +34,9 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
     const game = await GameModel.findOne({ 'GameData.ScoreID': data.ScoreID });
     
     const checkObject = (obj) => {
+      if(!obj){
+        return false;
+      }
       return !Object.keys(obj).length;
     }
 
