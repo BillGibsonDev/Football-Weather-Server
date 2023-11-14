@@ -4,7 +4,7 @@ import axios from "axios";
 import { handleHourlyWeather } from "./handleHourlyWeather.js";
 import { generateUserAgent } from "./generateUserAgent.js";
 
-let attempts = 20;
+let attempts = 5;
 
 export const handleForecastData = async ( forecast, hourly, data ) => {
   if(!forecast || !hourly ) {

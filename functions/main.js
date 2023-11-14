@@ -6,7 +6,7 @@ import { handleWeather } from "./handleWeather.js";
 
 dotenv.config();
 
-let attempts = 20;
+let attempts = 5;
 
 const statuses = ['InProgress', 'Final', 'F/OT', 'Postponed' ];
 
@@ -52,6 +52,7 @@ export const handleGames = async () => {
       }, 1000 * 60 * .25 * i);
     }
   } catch (error) {
+    console.log(error);
     if(attempts > 0){
       attempts--;
       setTimeout(() => {
