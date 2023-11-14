@@ -49,7 +49,7 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
         handleForecastData(forecast, hourly, data);
       }, 1000 * 60);
     } else {
-      console.Log(`Hourly Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.log(`Hourly Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
     }
   }
 }
