@@ -28,7 +28,6 @@ export const handleWeather = async (lat, lon, data) => {
       addWeatherData(data, forecasts.day, forecasts.hourly);
     }
   catch(error) {
-    console.log(error);
     if(attempts > 0){
       attempts--;
       setTimeout(() => {

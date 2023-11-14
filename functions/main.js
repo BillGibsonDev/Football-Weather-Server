@@ -52,14 +52,17 @@ export const handleGames = async () => {
       }, 1000 * 60 * .25 * i);
     }
   } catch (error) {
-    console.log(error);
     if(attempts > 0){
       attempts--;
       setTimeout(() => {
         handleGames();
       }, 1000 * 60 * 5);
     } else {
-      console.log(`Attempts Exceeded - Game API Error ${error.response.status}`);
+      if(error.response.status){
+        console.log(`Attempts Exceeded - Game API Error ${error.response.status}`);
+      } else {
+        console.log(`Attempts Exceeded - Game API Error ${error}`);
+      }
     }
   }
 };

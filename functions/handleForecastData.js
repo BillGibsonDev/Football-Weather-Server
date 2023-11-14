@@ -42,7 +42,6 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
     }
   }
   catch(error){
-    console.log(error);
     if(attempts > 0){
       attempts--;
       setTimeout(() => {

@@ -27,7 +27,6 @@ export const handleHourlyWeather = async (forecastURL, data) => {
     return hourlyWeather;
   }
   catch(error) {
-    console.log(error);
     if(attempts > 0){
         attempts--;
         setTimeout(() => {  
