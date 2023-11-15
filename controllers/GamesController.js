@@ -20,7 +20,7 @@ export const removeOlderGames = async () => {
       const gameDate = new Date(game.GameData.Date);
       if(gameDate < today ){
         await game.remove();
-        console.log('game removed');
+        console.log(`Game Removed ${game.GameData.AwayTeam} vs ${game.GameData.HomeTeam}`);
       } 
     }
   } catch (error) {
@@ -33,33 +33,30 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
   try {
     const game = await GameModel.findOne({ 'GameData.ScoreID': data.ScoreID });
     
-    const checkObject = (obj) => {
-      if(!obj){
-        return false;
-      }
-      return !Object.keys(obj).length;
-    }
+    const checkObject = (obj) => !obj || !Object.keys(obj).length;
 
-    if(game){
+    if (game) {
       game.Updated = update;
       game.GameData = data;
-      if(checkObject(game.GameDayWeather)){
+
+      if (!checkObject(dayWeather)) {
         game.GameDayWeather = dayWeather;
       }
-      if(checkObject(game.HourlyWeather)){
+
+      if (!checkObject(hourlyWeather)) {
         game.HourlyWeather = hourlyWeather;
       }
 
       await game.save();
-      console.log('Game Updated');
+      console.log(`Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`);
     } else {
       await GameModel.create({
         Updated: update,
         GameData: data,
-        GameDayWeather: dayWeather,
-        HourlyWeather: hourlyWeather
-      })
-      console.log('Game Created');
+        GameDayWeather: checkObject(dayWeather) ? null : dayWeather,
+        HourlyWeather: checkObject(hourlyWeather) ? null : hourlyWeather
+      });
+      console.log(`Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`);
     }
 
   } catch (error) {
