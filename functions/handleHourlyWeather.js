@@ -1,3 +1,4 @@
+User
 import axios from 'axios';
 import { generateUserAgent } from './generateUserAgent.js';
 
@@ -8,17 +9,20 @@ export const handleHourlyWeather = async (forecastURL, data) => {
     const response = await axios.get(`${forecastURL}`, { headers: { 'User-Agent': generateUserAgent() }});
     const day = response.data.properties.periods.filter(weather => weather.startTime.slice(0, 10) === data.DateTime.slice(0, 10));
     
-    const gameStartTimeUTC = new Date(data.DateTime).toISOString();
-    const splitGameStartTime = gameStartTimeUTC.split('T')[1].split(':');
-    const gameHourAndAbbreviation = `${splitGameStartTime[0]}, ${splitGameStartTime[2]}`;
+    const gameStartTimeEDT = new Date(data.DateTime).toLocaleString('en-US', { timeZone: 'America/New_York' });
+    const gameStartTime = gameStartTimeEDT; 
+    const splitGameStartTime = gameStartTime.split(' ');
+    const gameHourAndAbbreviation = splitGameStartTime[1].split(':');
 
     const timeIndex = day.findIndex(weather => {
-      const weatherStartTimeUTC = new Date(weather.startTime).toISOString();
-      const splitWeatherTime = weatherStartTimeUTC.split('T')[1].split(':');
-      const weatherHourAndAbbreviation = `${splitWeatherTime[0]}, ${splitWeatherTime[2]}`;
-      return weatherHourAndAbbreviation === gameHourAndAbbreviation;
+      const weatherStartTimeEDT = new Date(weather.startTime).toLocaleString('en-US', { timeZone: 'America/New_York' });
+      const weatherTime = weatherStartTimeEDT; 
+      const splitWeatherTime = weatherTime.split(' ');
+      const weatherHourAndAbbreviation = splitWeatherTime[1].split(':');
+      return `${weatherHourAndAbbreviation[0]}, ${splitWeatherTime[2]}` === `${gameHourAndAbbreviation[0]}, ${splitGameStartTime[2]}`;
     });
 
+    console.log(new Date())
     let gameEndTime = timeIndex + 3;
     let hourlyWeather = day.slice(timeIndex, gameEndTime);
 
