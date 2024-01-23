@@ -1,4 +1,3 @@
-User
 import axios from 'axios';
 import { generateUserAgent } from './generateUserAgent.js';
 
@@ -22,7 +21,6 @@ export const handleHourlyWeather = async (forecastURL, data) => {
       return `${weatherHourAndAbbreviation[0]}, ${splitWeatherTime[2]}` === `${gameHourAndAbbreviation[0]}, ${splitGameStartTime[2]}`;
     });
 
-    console.log(new Date())
     let gameEndTime = timeIndex + 3;
     let hourlyWeather = day.slice(timeIndex, gameEndTime);
 
