@@ -29,10 +29,10 @@ app.use('/', routes);
 
 app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
-}); 
+});
 
-handleGames()
-console.log(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))
+handleGames();
+
 // const databaseJob = new CronJob("45 * * * *", () => {
 //   handleGames();
 //   console.log('database job started');
