@@ -13,11 +13,7 @@ export const handleHourlyWeather = async (forecastURL, data) => {
     
     const timeIndex = day.findIndex(weather => {
       const weatherStartTime = new Date(weather.startTime);
-      if(weatherStartTime.toLocaleString('en-US', { timeZone: 'UTC' }) === gameStartTime.toLocaleString('en-US', { timeZone: 'UTC' })){
-        console.log(weatherStartTime.toLocaleString('en-US', { timeZone: 'UTC' }))
-        console.log(gameStartTime.toLocaleString('en-US', { timeZone: 'UTC' }))
-      }
-      return weatherStartTime.toUTCString() === gameStartTime.toUTCString();
+      return weatherStartTime.toLocaleString('en-US', { timeZone: 'UTC' }) === gameStartTime.toLocaleString('en-US', { timeZone: 'UTC' });
     });
 
     let gameEndTime = timeIndex + 3;
