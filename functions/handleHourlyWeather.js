@@ -14,8 +14,8 @@ export const handleHourlyWeather = async (forecastURL, data) => {
     const timeIndex = day.findIndex(weather => {
       const weatherStartTime = new Date(weather.startTime);
       if(weatherStartTime.toUTCString() === gameStartTime.toUTCString()){
-        console.log(weatherStartTime.toUTCString())
-        console.log(gameStartTime.toUTCString())
+        console.log(weatherStartTime.toLocaleString('en-US', { timeZone: 'America/New_York' }))
+        console.log(gameStartTime.toLocaleString('en-US', { timeZone: 'America/New_York' }))
       }
       return weatherStartTime.toUTCString() === gameStartTime.toUTCString();
     });
