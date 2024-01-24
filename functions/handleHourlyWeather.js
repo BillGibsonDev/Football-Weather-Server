@@ -10,7 +10,7 @@ export const handleHourlyWeather = async (forecastURL, data) => {
 
     const gameStartTime = new Date(data.DateTime);
     gameStartTime.setMinutes(0);
-    
+    console.log(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))
     const timeIndex = day.findIndex(weather => {
       const weatherStartTime = new Date(weather.startTime);
       return weatherStartTime.toISOString() === gameStartTime.toISOString();
