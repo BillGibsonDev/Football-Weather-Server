@@ -31,18 +31,16 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 });
 
-handleGames();
+const databaseJob = new CronJob("45 * * * *", () => {
+  handleGames();
+  console.log('database job started');
+},
+  null,
+  true,
+  'America/New_York'
+);
 
-// const databaseJob = new CronJob("45 * * * *", () => {
-//   handleGames();
-//   console.log('database job started');
-// },
-//   null,
-//   true,
-//   'America/New_York'
-// );
-
-// databaseJob.start();
+databaseJob.start();
 
 const cleanupJob = new CronJob("0 1 * * *", () => {
   removeOlderGames();
