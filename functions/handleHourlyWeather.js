@@ -22,8 +22,8 @@ export const handleHourlyWeather = async (forecastURL, data) => {
       return weatherStartTimeUTC === gameStartTimeUTC;
     });
 
-    let gameEndTime = timeIndex + 9;
-    let hourlyWeather = day.slice(timeIndex + 6, gameEndTime);
+    let gameEndTime = timeIndex + 8;
+    let hourlyWeather = day.slice(timeIndex + 5, gameEndTime);
 
     return hourlyWeather;
   }
