@@ -6,6 +6,12 @@ import { generateUserAgent } from "./generateUserAgent.js";
 
 let attempts = 5;
 
+const gameStartTime = new Date();
+gameStartTime.setDate(gameStartTime.getDate() + 1);
+gameStartTime.setHours(13);
+gameStartTime.setMinutes(0);
+const gameStartTimeUTC = gameStartTime.toISOString();
+
 export const handleForecastData = async ( forecast, hourly, data ) => {
   if(!forecast || !hourly ) {
     console.log(`No hourly forecast available ${data.AwayTeam} at ${data.HomeTeam}`);
@@ -14,8 +20,8 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
   try {
     const dayForecast = await axios.get(forecast, { headers: { "User-Agent": generateUserAgent() }});
     let hourlyForecast = await handleHourlyWeather(hourly, data);
-
-    let day = dayForecast.data.properties.periods.filter((weather) => weather.startTime.slice(0, 10) === data.DateTime.slice(0, 10));
+    
+    let day = dayForecast.data.properties.periods.filter((weather) => weather.startTime.slice(0, 10) === gameStartTimeUTC.slice(0, 10));
 
     let forecastObj = {};
     if (data.DateTime.slice(11, 13) < 17) {

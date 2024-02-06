@@ -8,22 +8,22 @@ dotenv.config();
 
 let attempts = 5;
 
-const statuses = ['InProgress', 'Final', 'F/OT', 'Postponed' ];
+// const statuses = ['InProgress', 'Final', 'F/OT', 'Postponed' ];
 
-const handleTimeSort = (arr) => {
-  arr.sort((a, b) => {
-    let timeA = new Date(`${a.Date}`);
-    let timeB = new Date(`${b.Date}`);
-    return timeA - timeB;
-  })
-  const filteredGames = [];
-  arr.forEach((game) => {
-    if(!statuses.includes(game.Status)){
-      filteredGames.push(game);
-    }
-  })
-  return filteredGames;
-}
+// const handleTimeSort = (arr) => {
+//   arr.sort((a, b) => {
+//     let timeA = new Date(`${a.Date}`);
+//     let timeB = new Date(`${b.Date}`);
+//     return timeA - timeB;
+//   })
+//   const filteredGames = [];
+//   arr.forEach((game) => {
+//     if(!statuses.includes(game.Status)){
+//       filteredGames.push(game);
+//     }
+//   })
+//   return filteredGames;
+// }
 
 // const gameDayCheck = (data) => {
 //   const today = new Date();
@@ -45,7 +45,7 @@ const handleTimeSort = (arr) => {
 export const handleGames = async () => {
   try {
     const response = await axios.get(`${process.env.NODE_ENV_SPORTS_API}`);
-    const data = handleTimeSort(response.data);
+    const data = response.data;
     for (let i = 0; i < data.length; i++) {
       setTimeout(() => {
         handleWeather(data[i].StadiumDetails.GeoLat, data[i].StadiumDetails.GeoLong, data[i]);

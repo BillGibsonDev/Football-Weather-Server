@@ -8,20 +8,19 @@ export const handleHourlyWeather = async (forecastURL, data) => {
     const response = await axios.get(`${forecastURL}`, { headers: { 'User-Agent': generateUserAgent() }});
     const day = response.data.properties.periods;
 
-    const gameStartTime = new Date(data.DateTime);
+    const gameStartTime = new Date();
+    gameStartTime.setDate(gameStartTime.getDate() + 1);
+    gameStartTime.setHours(13);
     gameStartTime.setMinutes(0);
+    gameStartTime.setSeconds(0);
     const gameStartTimeUTC = gameStartTime.toLocaleString('en-US', { timeZone: 'UTC' });
 
     const timeIndex = day.findIndex(weather => {
       const weatherStartTime = new Date(weather.startTime);
       const weatherStartTimeUTC = weatherStartTime.toLocaleString('en-US', { timeZone: 'UTC' });
-      if(weatherStartTimeUTC === gameStartTimeUTC){
-        console.log(weatherStartTimeUTC)
-        console.log(gameStartTimeUTC)
-      }
       return weatherStartTimeUTC === gameStartTimeUTC;
     });
-
+    
     let gameEndTime = timeIndex + 8;
     let hourlyWeather = day.slice(timeIndex + 5, gameEndTime);
 

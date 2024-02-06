@@ -56,7 +56,7 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
         GameDayWeather: checkObject(dayWeather) ? null : dayWeather,
         HourlyWeather: checkObject(hourlyWeather) ? null : hourlyWeather
       });
-      console.log(`Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.log(`Game Created ${data.AwayTeam} vs ${data.HomeTeam}`);
     }
 
   } catch (error) {
