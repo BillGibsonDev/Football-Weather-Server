@@ -7,10 +7,11 @@ import { generateUserAgent } from "./generateUserAgent.js";
 let attempts = 5;
 
 const gameStartTime = new Date();
-gameStartTime.setDate(gameStartTime.getDate() + 1);
+gameStartTime.setDate(gameStartTime.getDate() + 2);
 gameStartTime.setHours(13);
 gameStartTime.setMinutes(0);
 const gameStartTimeUTC = gameStartTime.toISOString();
+console.log(gameStartTimeUTC)
 
 export const handleForecastData = async ( forecast, hourly, data ) => {
   if(!forecast || !hourly ) {
