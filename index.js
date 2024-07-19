@@ -31,11 +31,10 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 });
 
-handleGames()
-
-const databaseJob = new CronJob("45 * * * *", () => {
-  handleGames();
+const databaseJob = new CronJob("45 * * * *", async () => {
   console.log('database job started');
+  await handleGames();
+  console.log('database job finished');
 },
   null,
   true,
@@ -44,9 +43,10 @@ const databaseJob = new CronJob("45 * * * *", () => {
 
 databaseJob.start();
 
-const cleanupJob = new CronJob("0 1 * * *", () => {
-  removeOlderGames();
+const cleanupJob = new CronJob("0 1 * * *", async () => {
   console.log('clean up job started');
+  await removeOlderGames();
+  console.log('clean up job finished');
 },
   null,
   true,
