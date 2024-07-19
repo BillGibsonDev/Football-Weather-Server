@@ -1,14 +1,14 @@
 {
     "type": "module",
     "dependencies": {
-        "axios": "^1.5.1",
+        "axios": "^1.7.2",
         "cors": "^2.8.5",
-        "cron": "^3.1.1",
+        "cron": "^3.1.7",
         "dotenv": "^10.0.0",
-        "express": "^4.17.1",
+        "express": "^4.19.2",
         "fs": "^0.0.1-security",
-        "mongoose": "^6.0.12",
-        "nodemon": "^2.0.14",
+        "mongoose": "^6.13.0",
+        "nodemon": "^2.0.22",
         "webpack": "^5.74.0"
     },
     "scripts": {
@@ -22,7 +22,10 @@
     "engines": {
         "node": "18.0.0"
     },
-    "devDependencies": {
-        "webpack-cli": "^4.10.0"
-    }
+    "name": "untitled",
+    "version": "1.0.0",
+    "description": "4Cast4Football is a project made to get weather for NFL Football games. I created this project with the thought of creating something that could be useful for my favorite sport. I correlated a free weather resource with a free sports data resource. Using the data I am able to create posts or tweets for each NFL game. Curently I have to post the tweets manually because of issues with the Twitter API character limit issues. This is why I created a website as well using the same data.",
+    "main": "index.js",
+    "author": "",
+    "license": "ISC"
 }

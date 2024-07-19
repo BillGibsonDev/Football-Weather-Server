@@ -7,11 +7,10 @@ import { generateUserAgent } from "./generateUserAgent.js";
 let attempts = 5;
 
 const gameStartTime = new Date();
-gameStartTime.setDate(gameStartTime.getDate() + 2);
+gameStartTime.setDate(gameStartTime.getDate() + 3);
 gameStartTime.setHours(13);
 gameStartTime.setMinutes(0);
 const gameStartTimeUTC = gameStartTime.toISOString();
-console.log(gameStartTimeUTC)
 
 export const handleForecastData = async ( forecast, hourly, data ) => {
   if(!forecast || !hourly ) {
@@ -23,7 +22,7 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
     let hourlyForecast = await handleHourlyWeather(hourly, data);
     
     let day = dayForecast.data.properties.periods.filter((weather) => weather.startTime.slice(0, 10) === gameStartTimeUTC.slice(0, 10));
-
+    console.log(day)
     let forecastObj = {};
     if (data.DateTime.slice(11, 13) < 17) {
       // if the game is during the day before 5pm aka 17:00, uses the day forecast
