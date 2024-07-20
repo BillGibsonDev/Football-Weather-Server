@@ -34,7 +34,7 @@ export const handleHourlyWeather = async (forecastURL, data) => {
         }, 1000 * 20);
     } else {
       console.log(`Attempts Exceeded - Hourly Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
-      return undefined;
+      return null;
     }
   }
 }
