@@ -23,8 +23,9 @@ export const removeOlderGames = async () => {
         console.log(`Game Removed ${game.GameData.AwayTeam} vs ${game.GameData.HomeTeam}`);
       } 
     }
+    return 'removing old games complete';
   } catch (error) {
-    console.log(error);
+    return `removing old games complete - ${error}`;
   }
 }
 

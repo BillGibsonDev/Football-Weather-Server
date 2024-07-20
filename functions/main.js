@@ -47,7 +47,6 @@ const apiURL = `${process.env.NODE_ENV_SPORTS_API}`;
 const apiKey = `${process.env.NODE_ENV_SPORTS_KEY_1}`;
 
 export const handleGames = async (week) => {
-  console.log(`${apiURL}${week}?key=${apiKey}`)
   try {
     const response = await axios.get(`${apiURL}${week}?key=${apiKey}`);
     const data = handleTimeSort(response.data);
@@ -56,6 +55,7 @@ export const handleGames = async (week) => {
         handleWeather(data[i].StadiumDetails.GeoLat, data[i].StadiumDetails.GeoLong, data[i]);
       }, 1000 * 60 * .25 * i);
     }
+    return 'database job complete';
   } catch (error) {
     if(attempts > 0){
       attempts--;
@@ -64,9 +64,9 @@ export const handleGames = async (week) => {
       }, 1000 * 60 * 5);
     } else {
       if(error.response.status){
-        console.log(`Attempts Exceeded - Game API Error ${error.response.status}`);
+        return `Attempts Exceeded - Game API Error ${error.response.status}`;
       } else {
-        console.log(`Attempts Exceeded - Game API Error ${error}`);
+        return `Attempts Exceeded - Game API Error ${error}`;
       }
     }
   }
