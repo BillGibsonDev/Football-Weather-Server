@@ -6,7 +6,7 @@ let attempts = 5;
 export const handleHourlyWeather = async (forecastURL, data) => {
   try {
     const response = await axios.get(`${forecastURL}`, { headers: { 'User-Agent': generateUserAgent() }});
-    const day = response.data.properties.periods;
+    const day = await response.data.properties.periods;
 
     const gameStartTime = new Date(data.DateTime);
     gameStartTime.setMinutes(0);
@@ -15,15 +15,11 @@ export const handleHourlyWeather = async (forecastURL, data) => {
     const timeIndex = day.findIndex(weather => {
       const weatherStartTime = new Date(weather.startTime);
       const weatherStartTimeUTC = weatherStartTime.toLocaleString('en-US', { timeZone: 'UTC' });
-      if(weatherStartTimeUTC === gameStartTimeUTC){
-        console.log(weatherStartTimeUTC)
-        console.log(gameStartTimeUTC)
-      }
       return weatherStartTimeUTC === gameStartTimeUTC;
     });
 
-    let gameEndTime = timeIndex + 8;
-    let hourlyWeather = day.slice(timeIndex + 5, gameEndTime);
+    const gameEndTime = timeIndex + 8;
+    const hourlyWeather = day.slice(timeIndex + 5, gameEndTime);
 
     return hourlyWeather;
   }
@@ -35,7 +31,7 @@ export const handleHourlyWeather = async (forecastURL, data) => {
         }, 1000 * 20);
     } else {
       console.log(`Attempts Exceeded - Hourly Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
-      return undefined;
+      return null;
     }
   }
 }

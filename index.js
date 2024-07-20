@@ -31,8 +31,21 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 });
 
+let week = 0;
+
+const weeklyUpdate = new CronJob("0 2 * * 2", () => {
+  week++;
+  console.log('week updated');
+},
+  null,
+  true,
+  'America/New_York'
+);
+
+weeklyUpdate.start();
+
 const databaseJob = new CronJob("45 * * * *", () => {
-  handleGames();
+  handleGames(week);
   console.log('database job started');
 },
   null,

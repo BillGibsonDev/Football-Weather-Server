@@ -25,7 +25,8 @@ const handleTimeSort = (arr) => {
   return filteredGames;
 }
 
-// const gameDayCheck = (data) => {
+// saving for future use??
+// const checkForCurrentGames = (data) => {
 //   const today = new Date();
 //   const formattedToday = today.toDateString();
 //   const filteredGames = [];
@@ -42,9 +43,13 @@ const handleTimeSort = (arr) => {
 //   return filteredGames;
 // }
 
-export const handleGames = async () => {
+const apiURL = `${process.env.NODE_ENV_SPORTS_API}`;
+const apiKey = `${process.env.NODE_ENV_SPORTS_KEY_1}`;
+
+export const handleGames = async (week) => {
+  console.log(`${apiURL}${week}?key=${apiKey}`)
   try {
-    const response = await axios.get(`${process.env.NODE_ENV_SPORTS_API}`);
+    const response = await axios.get(`${apiURL}${week}?key=${apiKey}`);
     const data = handleTimeSort(response.data);
     for (let i = 0; i < data.length; i++) {
       setTimeout(() => {
@@ -55,7 +60,7 @@ export const handleGames = async () => {
     if(attempts > 0){
       attempts--;
       setTimeout(() => {
-        handleGames();
+        handleGames(week);
       }, 1000 * 60 * 5);
     } else {
       if(error.response.status){

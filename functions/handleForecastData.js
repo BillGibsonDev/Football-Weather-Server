@@ -13,9 +13,9 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
   }
   try {
     const dayForecast = await axios.get(forecast, { headers: { "User-Agent": generateUserAgent() }});
-    let hourlyForecast = await handleHourlyWeather(hourly, data);
+    const hourlyForecast = await handleHourlyWeather(hourly, data);
 
-    let day = dayForecast.data.properties.periods.filter((weather) => weather.startTime.slice(0, 10) === data.DateTime.slice(0, 10));
+    const day = dayForecast.data.properties.periods.filter((weather) => weather.startTime.slice(0, 10) === data.DateTime.slice(0, 10));
 
     let forecastObj = {};
     if (data.DateTime.slice(11, 13) < 17) {
