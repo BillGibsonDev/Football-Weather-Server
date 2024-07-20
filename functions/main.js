@@ -51,6 +51,7 @@ export const handleGames = async () => {
         handleWeather(data[i].StadiumDetails.GeoLat, data[i].StadiumDetails.GeoLong, data[i]);
       }, 1000 * 60 * .25 * i);
     }
+    return 'database job complete';
   } catch (error) {
     if(attempts > 0){
       attempts--;
@@ -60,8 +61,10 @@ export const handleGames = async () => {
     } else {
       if(error.response.status){
         console.log(`Attempts Exceeded - Game API Error ${error.response.status}`);
+        return `database job failed - Game API Error ${error.response.status}`;
       } else {
         console.log(`Attempts Exceeded - Game API Error ${error}`);
+        return `database job failed - Game API Error ${error}`;
       }
     }
   }
