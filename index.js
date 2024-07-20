@@ -44,9 +44,9 @@ const weeklyUpdate = new CronJob("0 2 * * 2", () => {
 
 weeklyUpdate.start();
 
-const databaseJob = new CronJob("45 * * * *", () => {
+const databaseJob = new CronJob("45 * * * *", async () => {
   console.log('database job started');
-  const status = handleGames(week);
+  const status = await handleGames(week);
   console.log(status);
 },
   null,
