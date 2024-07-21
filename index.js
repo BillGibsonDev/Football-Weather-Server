@@ -44,17 +44,17 @@ let week = 0;
 
 // weeklyUpdate.start();
 
-const testJob = async () => {
-  try {
-    console.log('database job started');
-    const result = await handleGames(week);
-    console.log(result)
-  } catch(error){
-    console.log(error)
-  }
-}
+// const testJob = async () => {
+//   try {
+//     console.log('database job started');
+//     const result = await handleGames(week);
+//     console.log(result)
+//   } catch(error){
+//     console.log(error)
+//   }
+// }
 
-testJob()
+// testJob()
 
 const databaseJob = new CronJob("45 * * * *", async () => {
   console.log('database job started');
