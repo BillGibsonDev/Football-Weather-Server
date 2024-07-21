@@ -49,12 +49,19 @@ const apiKey = `${process.env.NODE_ENV_SPORTS_KEY_1}`;
 export const handleGames = async (week) => {
   try {
     const response = await axios.get(`${apiURL}${week}?key=${apiKey}`);
-    const data = handleTimeSort(response.data);
-    for (let i = 0; i < data.length; i++) {
-      setTimeout(() => {
-        handleWeather(data[i].StadiumDetails.GeoLat, data[i].StadiumDetails.GeoLong, data[i]);
-      }, 1000 * 60 * .25 * i);
-    }
+    const games = handleTimeSort(response.data);
+    const promises = games.map((game, i ) => {
+      return new Promise(resolve => {
+        setTimeout( async () => {
+          const result = await handleWeather(game.StadiumDetails.GeoLat, game.StadiumDetails.GeoLong, game);
+          console.log(result)
+          resolve();
+        }, 1000 * 60 * .25 * i);
+      })
+    })
+    
+    await Promise.all(promises)
+
     return 'database job complete';
   } catch (error) {
     if(attempts > 0){

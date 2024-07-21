@@ -8,8 +8,7 @@ let attempts = 5;
 
 export const handleForecastData = async ( forecast, hourly, data ) => {
   if(!forecast || !hourly ) {
-    console.log(`No hourly forecast available ${data.AwayTeam} at ${data.HomeTeam}`);
-    return;
+    return `No hourly forecast available ${data.AwayTeam} at ${data.HomeTeam}`;
   }
   try {
     const dayForecast = await axios.get(forecast, { headers: { "User-Agent": generateUserAgent() }});
@@ -48,7 +47,7 @@ export const handleForecastData = async ( forecast, hourly, data ) => {
         handleForecastData(forecast, hourly, data);
       }, 1000 * 60);
     } else {
-      console.log(`Hourly Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      return `Hourly Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`;
     }
   }
 }

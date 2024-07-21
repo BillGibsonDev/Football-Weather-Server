@@ -33,21 +33,37 @@ app.listen(port, host, () => {
 
 let week = 0;
 
-const weeklyUpdate = new CronJob("0 2 * * 2", () => {
-  week++;
-  console.log('week updated');
-},
-  null,
-  true,
-  'America/New_York'
-);
+// const weeklyUpdate = new CronJob("0 2 * * 2", () => {
+//   week++;
+//   console.log('week updated');
+// },
+//   null,
+//   true,
+//   'America/New_York'
+// );
 
-weeklyUpdate.start();
+// weeklyUpdate.start();
+
+const testJob = async () => {
+  try {
+    console.log('database job started');
+    const result = await handleGames(week);
+    console.log(result)
+  } catch(error){
+    console.log(error)
+  }
+}
+
+testJob()
 
 const databaseJob = new CronJob("45 * * * *", async () => {
   console.log('database job started');
-  const status = await handleGames(week);
-  console.log(status);
+  try {
+    const result = await handleGames(week);
+    console.log(result)
+  } catch(error){
+    console.log(error)
+  }
 },
   null,
   true,
@@ -58,8 +74,12 @@ databaseJob.start();
 
 const cleanupJob = new CronJob("0 1 * * *", async () => {
   console.log('clean up job started');
-  const status = await removeOlderGames();
-  console.log(status);
+    try {
+    const result = await removeOlderGames(week);
+    console.log(result)
+  } catch(error){
+    console.log(error)
+  }
 },
   null,
   true,

@@ -12,8 +12,7 @@ let attempts = 5;
 
 export const handleWeather = async (lat, lon, data) => {
   if(!lat || !lon ){
-    console.log(`Data Error - lat or lon not provided`);
-    return;
+    return `Data Error - lat or lon not provided`;
   }
   try {
     const response = await axios.get(`${process.env.NODE_ENV_WEATHER_API}/${lat},${lon}`, {
@@ -25,16 +24,16 @@ export const handleWeather = async (lat, lon, data) => {
       const dailyForecastURL = await response.data.properties.forecast;
       const forecasts = await handleForecastData(dailyForecastURL, hourlyForecastURL, data);
 
-      addWeatherData(data, forecasts.day, forecasts.hourly);
-    }
-  catch(error) {
+      const result = await addWeatherData(data, forecasts.day, forecasts.hourly);
+      return result;
+  } catch(error) {
     if(attempts > 0){
       attempts--;
       setTimeout(() => {
         handleWeather(lat, lon, data);
       }, 1000 * 20);
     } else {
-     console.log(`Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      return `Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`;
     }
   }
 };

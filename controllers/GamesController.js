@@ -25,7 +25,7 @@ export const removeOlderGames = async () => {
     }
     return 'removing old games complete';
   } catch (error) {
-    return `removing old games complete - ${error}`;
+    return `removing old games failed - ${error}`;
   }
 }
 
@@ -49,7 +49,8 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
       }
 
       await game.save();
-      console.log(`Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`);
+
+      return `Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`;
     } else {
       await GameModel.create({
         Updated: update,
@@ -57,10 +58,9 @@ export const addWeatherData = async (data, dayWeather, hourlyWeather) => {
         GameDayWeather: checkObject(dayWeather) ? null : dayWeather,
         HourlyWeather: checkObject(hourlyWeather) ? null : hourlyWeather
       });
-      console.log(`Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`);
+     return `Game Updated ${data.AwayTeam} vs ${data.HomeTeam}`;
     }
-
   } catch (error) {
-    console.log(error);
+    return `Error uploading game data ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`;
   }
 }
