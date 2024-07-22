@@ -3,34 +3,47 @@ import { generateUserAgent } from './generateUserAgent.js';
 
 let attempts = 5;
 
+function convertToEasternTime(date) {
+  const utcDate = new Date(date);
+  return utcDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
+}
+
 export const handleHourlyWeather = async (forecastURL, data) => {
   try {
-    const response = await axios.get(`${forecastURL}`, { headers: { 'User-Agent': generateUserAgent() }});
-    const day = await response.data.properties.periods;
+    const response = await axios.get(forecastURL, { headers: { 'User-Agent': generateUserAgent() } });
+    const day = response.data.properties.periods;
 
     const gameStartTime = new Date(data.DateTime);
-    gameStartTime.setMinutes(0);
-    const gameStartTimeUTC = gameStartTime.toLocaleString('en-US', { timeZone: 'UTC' });
+    const gameStartTimeUTC = gameStartTime.toISOString();
 
     const timeIndex = day.findIndex(weather => {
       const weatherStartTime = new Date(weather.startTime);
-      const weatherStartTimeUTC = weatherStartTime.toLocaleString('en-US', { timeZone: 'UTC' });
-      return weatherStartTimeUTC === gameStartTimeUTC;
+      return weatherStartTime.toISOString() === gameStartTimeUTC;
     });
 
-    const gameEndTime = timeIndex + 8;
-    const hourlyWeather = day.slice(timeIndex + 5, gameEndTime);
+    if (timeIndex === -1) {
+      return null;
+    }
 
-    return hourlyWeather;
+    const gameEndTimeIndex = timeIndex + 8;
+    const hourlyWeather = day.slice(timeIndex + 5, gameEndTimeIndex);
+
+    const hourlyWeatherET = hourlyWeather.map(weather => {
+      const weatherStartTimeUTC = new Date(weather.startTime);
+      const weatherStartTimeET = convertToEasternTime(weatherStartTimeUTC);
+      return { ...weather, startTimeET: weatherStartTimeET };
+    });
+
+    return hourlyWeatherET;
   }
   catch(error) {
     if(attempts > 0){
-        attempts--;
-        setTimeout(() => {  
-          handleHourlyWeather(forecastURL, data);
-        }, 1000 * 20);
+      attempts--;
+      setTimeout(() => {  
+        handleHourlyWeather(forecastURL, data);
+      }, 1000 * 20);
     } else {
-      console.log(`Attempts Exceeded - Hourly Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
+      console.log(`Attempts Exceeded - ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`);
       return null;
     }
   }

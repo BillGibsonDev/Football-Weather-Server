@@ -33,7 +33,7 @@ export const handleWeather = async (lat, lon, data) => {
         handleWeather(lat, lon, data);
       }, 1000 * 20);
     } else {
-      return `Forecast Error ${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`;
+      return `${error} on game ${data.AwayTeam} vs ${data.HomeTeam}`;
     }
   }
 };
