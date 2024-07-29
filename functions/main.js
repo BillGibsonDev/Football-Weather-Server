@@ -54,7 +54,6 @@ export const handleGames = async (week) => {
       return new Promise(resolve => {
         setTimeout( async () => {
           const result = await handleWeather(game.StadiumDetails.GeoLat, game.StadiumDetails.GeoLong, game);
-          console.log(result)
           resolve();
         }, 1000 * 60 * .25 * i);
       })
