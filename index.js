@@ -31,18 +31,18 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 });
 
-let week = 1;
+let week = 2;
 
-// const weeklyUpdate = new CronJob("0 2 * * 2", () => {
-//   week++;
-//   console.log('week updated');
-// },
-//   null,
-//   true,
-//   'America/New_York'
-// );
+const weeklyUpdate = new CronJob("0 2 * * 2", () => {
+  week++;
+  console.log('week updated');
+},
+  null,
+  true,
+  'America/New_York'
+);
 
-// weeklyUpdate.start();
+weeklyUpdate.start();
 
 // const testJob = async () => {
 //   try {
