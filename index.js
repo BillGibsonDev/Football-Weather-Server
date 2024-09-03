@@ -33,16 +33,16 @@ app.listen(port, host, () => {
 
 let week = 1;
 
-// const weeklyUpdate = new CronJob("0 2 * * 2", () => {
-//   week++;
-//   console.log('week updated');
-// },
-//   null,
-//   true,
-//   'America/New_York'
-// );
+const weeklyUpdate = new CronJob("0 2 * * 2", () => {
+  week++;
+  console.log('week updated');
+},
+  null,
+  true,
+  'America/New_York'
+);
 
-// weeklyUpdate.start();
+weeklyUpdate.start();
 
 // const testJob = async () => {
 //   try {
