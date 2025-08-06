@@ -31,8 +31,10 @@ app.listen(port, host, () => {
   console.log(`Server active on ${port}`);
 });
 
-let week = 9;
+let week = 1;
 
+handleGames(week)
+removeOlderGames(week)
 
 // const weeklyUpdate = new CronJob("0 2 * * 2", () => {
 //   week++;
